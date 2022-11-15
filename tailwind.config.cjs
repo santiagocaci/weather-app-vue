@@ -3,9 +3,18 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {},
+    fontFamily: {
+      Lato: ['Lato, sans-serif'],
+    },
+    container: {
+      padding: '2rem',
+      center: true,
+    },
+    screens: {
+      sm: '640px',
+      md: '768px',
+    },
   },
-  daysiui: {
-    theme: ['dracula'],
-  },
+  daysiui: {},
   plugins: [require('daisyui')],
 };
