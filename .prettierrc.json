@@ -2,5 +2,6 @@
   "singleQuote": true,
   "arrowParens": "avoid",
   "jsxSingleQuote": true,
-  "htmlWhitespaceSensitivity": "ignore"
+  "htmlWhitespaceSensitivity": "ignore",
+  "singleAttributePerLine": true
 }
