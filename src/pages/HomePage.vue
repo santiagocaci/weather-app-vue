@@ -1,25 +1,45 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import { useRouter } from 'vue-router';
+import { getPlaceByName } from '@/api/mapBoxAPI.js';
+
+const router = useRouter();
 
 const searchQuery = ref('');
 const queryTimeout = ref(null);
 const mapboxSearchResults = ref(null);
+const searchError = ref(null);
+
+const previewCity = searchResult => {
+  const [city, state] = searchResult.place_name.split(', ');
+  router.push({
+    name: 'cityPage',
+    params: {
+      state,
+      city,
+    },
+    query: {
+      lng: searchResult.geometry.coordinates[0],
+      lat: searchResult.geometry.coordinates[1],
+      preview: true,
+    },
+  });
+};
 
 const getSearchResults = () => {
   queryTimeout.value = setTimeout(async () => {
     clearTimeout(queryTimeout.value);
-    if (searchQuery.value !== '') {
-      const result = await axios.get(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${
-          searchQuery.value
-        }.json?access_token=${import.meta.env.VITE_MAPBOX_APY_KEY}&type=place`
-      );
-      mapboxSearchResults.value = result.data.features;
-      return;
-    }
     mapboxSearchResults.value = null;
-  }, 300);
+    if (searchQuery.value === '') return;
+    try {
+      const result = await getPlaceByName(searchQuery.value);
+      mapboxSearchResults.value = result.data.features;
+      searchError.value = false;
+    } catch (error) {
+      searchError.value = true;
+      console.log(error.message);
+    }
+  }, 500);
 };
 </script>
 
@@ -34,16 +54,27 @@ const getSearchResults = () => {
         class="py-2 px-1 w-full bg-transparent border-b focus:outline-none"
       />
       <ul
-        v-if="mapboxSearchResults"
-        class="absolute bg-base-300 text-base-content w-full shadow-md py-2 px-1 top-[66px]"
+        v-if="mapboxSearchResults || searchError"
+        class="absolute bg-base-300 text-base-content w-full shadow-md py-1 px-4 top-[66px]"
       >
-        <li
-          class="py-2 cursor-pointer"
-          v-for="item in mapboxSearchResults"
-          :key="item.id"
-        >
-          {{ item.place_name }}
-        </li>
+        <p v-if="searchError">
+          <i class="fa-solid fa-triangle-exclamation text-error pr-2"></i>
+          Sorry, something went wrong, pleace try again
+        </p>
+        <p v-if="!searchError && mapboxSearchResults.length === 0">
+          <i class="fa-solid fa-circle-exclamation text-info pr-2"></i>
+          No results match your query, try a different term.
+        </p>
+        <template v-else>
+          <li
+            v-for="item in mapboxSearchResults"
+            :key="item.id"
+            @click="previewCity(item)"
+            class="py-2 cursor-pointer"
+          >
+            {{ item.place_name }}
+          </li>
+        </template>
       </ul>
     </div>
   </main>
