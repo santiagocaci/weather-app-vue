@@ -20,7 +20,10 @@ defineEmits(['closeModal']);
           >
             <slot />
             <div class="text-end mt-2">
-              <button class="btn btn-success" @click.stop="$emit('closeModal')">
+              <button
+                class="btn btn-success"
+                @click.stop="$emit('closeModal')"
+              >
                 Close
               </button>
             </div>

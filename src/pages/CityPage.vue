@@ -1,4 +1,13 @@
-<script setup></script>
+<script setup>
+import CityPageAsync from '@/pages/CityPageAsync.vue';
+</script>
 <template>
-  <div>Citipage!</div>
+  <div>
+    <Suspense>
+      <CityPageAsync />
+      <template #fallback>
+        <p>loading...</p>
+      </template>
+    </Suspense>
+  </div>
 </template>

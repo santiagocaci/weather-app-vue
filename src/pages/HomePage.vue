@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getPlaceByName } from '@/api/mapBoxAPI.js';
+import { mapBoxAPI } from '@/api/mapBoxAPI.js';
 
 const router = useRouter();
 
@@ -19,7 +19,7 @@ const previewCity = searchResult => {
       city,
     },
     query: {
-      lng: searchResult.geometry.coordinates[0],
+      lon: searchResult.geometry.coordinates[0],
       lat: searchResult.geometry.coordinates[1],
       preview: true,
     },
@@ -32,7 +32,7 @@ const getSearchResults = () => {
     mapboxSearchResults.value = null;
     if (searchQuery.value === '') return;
     try {
-      const result = await getPlaceByName(searchQuery.value);
+      const result = await mapBoxAPI.getPlaceByName(searchQuery.value);
       mapboxSearchResults.value = result.data.features;
       searchError.value = false;
     } catch (error) {

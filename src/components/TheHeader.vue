@@ -10,7 +10,7 @@ const toggleModal = () => (isModalActive.value = !isModalActive.value);
 
 <template>
   <header
-    class="sticky top-0 bg-gradient-to-b from-primary/50 to-base-100 shadow-md"
+    class="sticky top-0 bg-gradient-to-bl from-neutral to-base-100 shadow-md"
   >
     <nav
       class="container flex flex-col sm:flex-row items-center gap-4 py-6 text-neutral-content"
@@ -30,7 +30,10 @@ const toggleModal = () => (isModalActive.value = !isModalActive.value);
         <i class="fa-solid fa-plus text-xl cursor-pointer"></i>
       </div>
 
-      <BaseModal :is-modal-open="isModalActive" @close-modal="toggleModal">
+      <BaseModal
+        :is-modal-open="isModalActive"
+        @close-modal="toggleModal"
+      >
         <TheInfoContent />
       </BaseModal>
     </nav>

@@ -3,11 +3,11 @@ import axios from 'axios';
 const instance = axios.create({
   baseURL: 'https://api.mapbox.com/geocoding/v5/mapbox.places/',
   params: {
-    access_token: import.meta.env.VITE_MAPBOX_APY_KEY,
+    access_token: import.meta.env.VITE_MAPBOX_API_KEY,
   },
 });
 
-export const getPlaceByName = async name => {
+const getPlaceByName = async name => {
   const result = await instance({
     url: `${name}.json`,
     method: 'get',
@@ -18,3 +18,5 @@ export const getPlaceByName = async name => {
 
   return result;
 };
+
+export const mapBoxAPI = { getPlaceByName };
