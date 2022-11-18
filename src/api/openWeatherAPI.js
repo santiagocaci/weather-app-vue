@@ -4,6 +4,7 @@ const instance = axios.create({
   baseURL: 'https://api.openweathermap.org/data/2.5/',
   params: {
     appid: import.meta.env.VITE_OPENWEATHER_API_KEY,
+    units: 'metric',
   },
 });
 
@@ -13,10 +14,20 @@ const getWeatherData = async (lat, lon) => {
     params: {
       lat,
       lon,
-      units: 'metric',
     },
   });
   return weatherData;
 };
 
-export const openWeatherAPI = { getWeatherData };
+const getCurrentWeather = async (lat, lon) => {
+  const weatherData = await instance({
+    url: 'weather',
+    params: {
+      lat,
+      lon,
+    },
+  });
+  return weatherData;
+};
+
+export const openWeatherAPI = { getWeatherData, getCurrentWeather };

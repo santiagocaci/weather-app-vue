@@ -29,8 +29,9 @@ const addCity = () => {
   savedCities.value.push(locationObj);
   localStorage.setItem('savedCities', JSON.stringify(savedCities.value));
 
-  const query = { ...route.query };
+  const query = structuredClone(route.query);
   delete query.preview;
+  query.id = locationObj.id;
   router.replace({ query });
 };
 </script>

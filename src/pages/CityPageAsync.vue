@@ -1,10 +1,11 @@
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { openWeatherAPI } from '@/api/openWeatherAPI.js';
 import { getCurrentTime } from '@/utils/calcTime.js';
 
 const route = useRoute();
 const { query } = route;
+const router = useRouter();
 
 const getWeatherData = async () => {
   try {
@@ -42,6 +43,15 @@ const currentTime = () =>
 
 const currentHour = hour =>
   new Date(hour).toLocaleTimeString('en-us', { hour: '2-digit' });
+
+const removeCity = () => {
+  const cities = JSON.parse(localStorage.getItem('savedCities'));
+  const updatedCities = cities.filter(city => city.id !== query.id);
+  localStorage.setItem('savedCities', JSON.stringify(updatedCities));
+  router.push({
+    name: 'home',
+  });
+};
 
 const roundTemp = temp => Math.round(temp);
 </script>
@@ -132,6 +142,14 @@ const roundTemp = temp => Math.round(temp);
           </div>
         </div>
       </div>
+    </div>
+
+    <div
+      @click="removeCity"
+      class="flex items-center gap-2 py-12 cursor-pointer duration-150 hover:text-red-500"
+    >
+      <i class="fa-solid fa-trash"></i>
+      <p>Remove city</p>
     </div>
   </div>
 </template>
