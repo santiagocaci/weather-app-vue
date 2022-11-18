@@ -1,11 +1,21 @@
 <script setup>
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { uid } from 'uid';
+
 import { openWeatherAPI } from '@/api/openWeatherAPI.js';
-import { getCurrentTime } from '@/utils/calcTime.js';
+import {
+  getCurrentTime,
+  currentDate,
+  currentTime,
+  currentHour,
+} from '@/utils/calcTime.js';
 
 const route = useRoute();
 const { query } = route;
 const router = useRouter();
+
+const savedCities = ref([]);
 
 const getWeatherData = async () => {
   try {
@@ -27,23 +37,6 @@ const getWeatherData = async () => {
   }
 };
 
-const weatherData = await getWeatherData();
-
-const currentDate = () =>
-  new Date(weatherData.currentTime).toLocaleDateString('es-ar', {
-    weekday: 'short',
-    day: '2-digit',
-    month: 'long',
-  });
-
-const currentTime = () =>
-  new Date(weatherData.currentTime).toLocaleTimeString('es-AR', {
-    timeStyle: 'short',
-  });
-
-const currentHour = hour =>
-  new Date(hour).toLocaleTimeString('en-us', { hour: '2-digit' });
-
 const removeCity = () => {
   const cities = JSON.parse(localStorage.getItem('savedCities'));
   const updatedCities = cities.filter(city => city.id !== query.id);
@@ -53,13 +46,48 @@ const removeCity = () => {
   });
 };
 
+const addCity = () => {
+  if (localStorage.getItem('savedCities')) {
+    savedCities.value = JSON.parse(localStorage.getItem('savedCities'));
+  }
+  const locationObj = {
+    id: uid(),
+    state: route.params.state,
+    city: route.params.city,
+    coords: {
+      lat: route.query.lat,
+      lon: route.query.lon,
+    },
+  };
+
+  savedCities.value.push(locationObj);
+  localStorage.setItem('savedCities', JSON.stringify(savedCities.value));
+
+  const query = structuredClone(route.query);
+  delete query.preview;
+  query.id = locationObj.id;
+  router.replace({ query });
+};
+
 const roundTemp = temp => Math.round(temp);
+
+const isSavedCity = () => {
+  const savedCities = JSON.parse(localStorage.getItem('savedCities'));
+  if (!savedCities) return;
+  return savedCities.find(
+    city => city.city === route.params.city && city.state === route.params.state
+  );
+};
+
+console.log(isSavedCity());
+
+const weatherData = await getWeatherData();
 </script>
 
 <template>
   <div class="flex flex-col flex-1 items-center">
     <div
-      v-if="route.query.preview"
+      v-if="!isSavedCity()"
       class="p-4 w-full text-center border bg-base-300"
     >
       <p>
@@ -68,9 +96,27 @@ const roundTemp = temp => Math.round(temp);
       </p>
     </div>
 
-    <div class="flex flex-col items-center text-white py-12">
+    <div class="relative flex flex-col items-center text-white py-12">
+      <div
+        class="text-2xl absolute block -right-3 rounded-full px-2 py-1 cursor-pointer"
+      >
+        <i
+          v-if="isSavedCity()"
+          @click="removeCity()"
+          class="fa-solid fa-trash duration-150 hover:text-error"
+        ></i>
+        <i
+          v-else
+          @click="addCity()"
+          class="fa-solid fa-plus duration-150 hover:text-success"
+        ></i>
+      </div>
+
       <h1 class="text-4xl mb-2">{{ route.params.city }}</h1>
-      <p class="text-sm mb-12">{{ currentDate() }} {{ currentTime() }}</p>
+      <p class="text-sm mb-12">
+        {{ currentDate(weatherData.currentTime) }}
+        {{ currentTime(weatherData.currentTime) }}
+      </p>
       <p class="text-8xl mb-4">
         {{ roundTemp(weatherData.current.temp) }}&deg;C
       </p>
@@ -144,14 +190,6 @@ const roundTemp = temp => Math.round(temp);
           </div>
         </div>
       </div>
-    </div>
-
-    <div
-      @click="removeCity"
-      class="flex items-center gap-2 py-12 cursor-pointer duration-150 hover:text-red-500"
-    >
-      <i class="fa-solid fa-trash"></i>
-      <p>Remove city</p>
     </div>
   </div>
 </template>

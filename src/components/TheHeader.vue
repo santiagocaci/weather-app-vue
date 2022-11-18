@@ -1,44 +1,39 @@
 <script setup>
 import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { uid } from 'uid';
 import BaseModal from '@/components/BaseModal.vue';
 import TheInfoContent from '@/components/TheInfoContent.vue';
 
 const isModalActive = ref(null);
-const route = useRoute();
-const router = useRouter();
 
 const toggleModal = () => (isModalActive.value = !isModalActive.value);
 
-const savedCities = ref([]);
-const addCity = () => {
-  if (localStorage.getItem('savedCities')) {
-    savedCities.value = JSON.parse(localStorage.getItem('savedCities'));
-  }
-  const locationObj = {
-    id: uid(),
-    state: route.params.state,
-    city: route.params.city,
-    coords: {
-      lat: route.query.lat,
-      lon: route.query.lon,
-    },
-  };
+// const addCity = () => {
+//   if (localStorage.getItem('savedCities')) {
+//     savedCities.value = JSON.parse(localStorage.getItem('savedCities'));
+//   }
+//   const locationObj = {
+//     id: uid(),
+//     state: route.params.state,
+//     city: route.params.city,
+//     coords: {
+//       lat: route.query.lat,
+//       lon: route.query.lon,
+//     },
+//   };
 
-  savedCities.value.push(locationObj);
-  localStorage.setItem('savedCities', JSON.stringify(savedCities.value));
+//   savedCities.value.push(locationObj);
+//   localStorage.setItem('savedCities', JSON.stringify(savedCities.value));
 
-  const query = structuredClone(route.query);
-  delete query.preview;
-  query.id = locationObj.id;
-  router.replace({ query });
-};
+//   const query = structuredClone(route.query);
+//   delete query.preview;
+//   query.id = locationObj.id;
+//   router.replace({ query });
+// };
 </script>
 
 <template>
   <header
-    class="sticky top-0 bg-gradient-to-bl from-neutral to-base-100 shadow-md"
+    class="sticky top-0 z-10 bg-gradient-to-bl from-neutral to-base-100 shadow-md"
   >
     <nav
       class="container flex flex-row items-center gap-4 py-6 text-neutral-content"
@@ -54,11 +49,6 @@ const addCity = () => {
         <i
           class="fa-sharp fa-solid fa-circle-info text-2xl cursor-pointer"
           @click="toggleModal"
-        ></i>
-        <i
-          v-if="route.query.preview"
-          @click="addCity"
-          class="fa-solid fa-plus text-2xl cursor-pointer"
         ></i>
       </div>
 
