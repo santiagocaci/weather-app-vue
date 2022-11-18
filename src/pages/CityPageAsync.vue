@@ -12,7 +12,7 @@ import {
 } from '@/utils/calcTime.js';
 
 const route = useRoute();
-const { query } = route;
+
 const router = useRouter();
 
 const savedCities = ref([]);
@@ -20,8 +20,8 @@ const savedCities = ref([]);
 const getWeatherData = async () => {
   try {
     const { data: weatherData } = await openWeatherAPI.getWeatherData(
-      query.lat,
-      query.lon
+      route.query.lat,
+      route.query.lon
     );
     // eslint-disable-next-line camelcase
     const { current, timezone_offset } = weatherData;
@@ -39,7 +39,7 @@ const getWeatherData = async () => {
 
 const removeCity = () => {
   const cities = JSON.parse(localStorage.getItem('savedCities'));
-  const updatedCities = cities.filter(city => city.id !== query.id);
+  const updatedCities = cities.filter(city => city.id !== route.query.id);
   localStorage.setItem('savedCities', JSON.stringify(updatedCities));
   router.push({
     name: 'home',
