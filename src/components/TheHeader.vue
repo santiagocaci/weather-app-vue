@@ -41,7 +41,7 @@ const addCity = () => {
     class="sticky top-0 bg-gradient-to-bl from-neutral to-base-100 shadow-md"
   >
     <nav
-      class="container flex flex-col sm:flex-row items-center gap-4 py-6 text-neutral-content"
+      class="container flex flex-row items-center gap-4 py-6 text-neutral-content"
     >
       <router-link to="/">
         <div class="flex items-center gap-3 text-2xl">

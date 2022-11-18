@@ -90,7 +90,7 @@ const roundTemp = temp => Math.round(temp);
 
     <div class="max-w-screen-md w-full py-12">
       <div class="mx-8">
-        <h2 class="text-3xl mb-4">Hourly weather:</h2>
+        <h2 class="text-3xl text-center sm:text-start mb-4">Hourly weather</h2>
         <div class="flex gap-10 overflow-x-scroll">
           <div
             v-for="hourData in weatherData.hourly"
@@ -118,7 +118,7 @@ const roundTemp = temp => Math.round(temp);
 
     <div class="max-w-screen-md w-full py-12">
       <div class="mx-8">
-        <h2 class="text-3xl mb-4">7 Day Forecast:</h2>
+        <h2 class="text-3xl text-center sm:text-start mb-4">7 Day Forecast</h2>
         <div
           v-for="day in weatherData.daily"
           :key="day.dt"
@@ -136,9 +136,11 @@ const roundTemp = temp => Math.round(temp);
             alt=""
             class="w-[75px] object-cover"
           />
-          <div class="flex gap-2 justify-end flex-1">
-            <p>H: {{ roundTemp(day.temp.max) }}</p>
-            <p>L: {{ roundTemp(day.temp.min) }}</p>
+          <div
+            class="flex flex-col sm:flex-row gap-2 justify-end sm:flex-1 ml-2"
+          >
+            <p class="text-end">H: {{ roundTemp(day.temp.max) }}</p>
+            <p class="text-end">L: {{ roundTemp(day.temp.min) }}</p>
           </div>
         </div>
       </div>
