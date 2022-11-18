@@ -16,7 +16,6 @@ const getCities = async () => {
     });
 
     const weatherData = await Promise.all(request);
-
     weatherData.forEach(
       (value, index) => (savedCities.value[index].weather = value.data)
     );

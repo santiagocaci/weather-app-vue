@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { mapBoxAPI } from '@/api/mapBoxAPI.js';
 import CityList from '@/components/CityList.vue';
+import CityListItemSkeleton from '@/components/CityListItemSkeleton.vue';
 
 const router = useRouter();
 
@@ -83,7 +84,7 @@ const getSearchResults = () => {
       <Suspense>
         <CityList />
         <template #fallback>
-          <p>Loading...</p>
+          <CityListItemSkeleton />
         </template>
       </Suspense>
     </div>
