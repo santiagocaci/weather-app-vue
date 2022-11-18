@@ -3,14 +3,26 @@ import HomePage from '@/pages/HomePage.vue';
 import CityPage from '@/pages/CityPage.vue';
 
 const routes = [
-  { path: '/', name: 'home', component: HomePage },
-  { path: '/weather/:state/:city', name: 'cityPage', component: CityPage },
+  { path: '/', name: 'home', component: HomePage, meta: { title: 'Home' } },
+  {
+    path: '/weather/:state/:city',
+    name: 'cityPage',
+    component: CityPage,
+    meta: { title: 'Weather' },
+  },
   { path: '/:pathMatch(.*)*', component: HomePage },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  document.title = `${
+    to.params.state ? `${to.params.city}, ${to.params.state}` : to.meta.title
+  }`;
+  next();
 });
 
 export default router;
