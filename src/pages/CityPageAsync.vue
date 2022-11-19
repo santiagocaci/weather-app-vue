@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { uid } from 'uid';
 
@@ -38,8 +38,7 @@ const getWeatherData = async () => {
 };
 
 const removeCity = () => {
-  const cities = JSON.parse(localStorage.getItem('savedCities'));
-  const updatedCities = cities.filter(
+  const updatedCities = savedCities.value.filter(
     city => city.city !== route.params.city && city.state !== route.params.state
   );
   localStorage.setItem('savedCities', JSON.stringify(updatedCities));
@@ -49,9 +48,6 @@ const removeCity = () => {
 };
 
 const addCity = () => {
-  if (localStorage.getItem('savedCities')) {
-    savedCities.value = JSON.parse(localStorage.getItem('savedCities'));
-  }
   const locationObj = {
     id: uid(),
     state: route.params.state,
@@ -73,10 +69,12 @@ const addCity = () => {
 
 const roundTemp = temp => Math.round(temp);
 
+onMounted(
+  () => (savedCities.value = JSON.parse(localStorage.getItem('savedCities')))
+);
+
 const isSavedCity = () => {
-  const savedCities = JSON.parse(localStorage.getItem('savedCities'));
-  if (!savedCities) return;
-  return savedCities.find(
+  return savedCities.value.find(
     city => city.city === route.params.city && city.state === route.params.state
   );
 };

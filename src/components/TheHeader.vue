@@ -6,29 +6,6 @@ import TheInfoContent from '@/components/TheInfoContent.vue';
 const isModalActive = ref(null);
 
 const toggleModal = () => (isModalActive.value = !isModalActive.value);
-
-// const addCity = () => {
-//   if (localStorage.getItem('savedCities')) {
-//     savedCities.value = JSON.parse(localStorage.getItem('savedCities'));
-//   }
-//   const locationObj = {
-//     id: uid(),
-//     state: route.params.state,
-//     city: route.params.city,
-//     coords: {
-//       lat: route.query.lat,
-//       lon: route.query.lon,
-//     },
-//   };
-
-//   savedCities.value.push(locationObj);
-//   localStorage.setItem('savedCities', JSON.stringify(savedCities.value));
-
-//   const query = structuredClone(route.query);
-//   delete query.preview;
-//   query.id = locationObj.id;
-//   router.replace({ query });
-// };
 </script>
 
 <template>
