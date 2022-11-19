@@ -1,25 +1,26 @@
 <script setup>
-import { ref } from 'vue';
+// import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+import { useLocalStorage } from '@/composables/useLocalStorage.js';
+
 import { openWeatherAPI } from '@/api/openWeatherAPI.js';
 import CityListItem from '@/components/CityListItem.vue';
 
-const savedCities = ref([]);
+const { value: savedCities } = useLocalStorage('savedCities');
 const router = useRouter();
 
 const getCities = async () => {
-  if (localStorage.getItem('savedCities')) {
-    savedCities.value = JSON.parse(localStorage.getItem('savedCities'));
+  if (savedCities.value.length === 0) return;
 
-    const request = savedCities.value.map(({ coords }) => {
-      return openWeatherAPI.getCurrentWeather(coords.lat, coords.lon);
-    });
+  const request = savedCities.value.map(({ coords }) => {
+    return openWeatherAPI.getCurrentWeather(coords.lat, coords.lon);
+  });
 
-    const weatherData = await Promise.all(request);
-    weatherData.forEach(
-      (value, index) => (savedCities.value[index].weather = value.data)
-    );
-  }
+  const weatherData = await Promise.all(request);
+  weatherData.forEach(
+    (value, index) => (savedCities.value[index].weather = value.data)
+  );
 };
 
 await getCities();

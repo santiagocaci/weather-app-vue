@@ -1,9 +1,9 @@
 <script setup>
-import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { uid } from 'uid';
 
 import { openWeatherAPI } from '@/api/openWeatherAPI.js';
+import { useLocalStorage } from '@/composables/useLocalStorage.js';
 import {
   getCurrentTime,
   currentDate,
@@ -15,7 +15,8 @@ const route = useRoute();
 
 const router = useRouter();
 
-const savedCities = ref([]);
+const { value: savedCities, setItem: setCities } =
+  useLocalStorage('savedCities');
 
 const getWeatherData = async () => {
   try {
@@ -41,7 +42,7 @@ const removeCity = () => {
   const updatedCities = savedCities.value.filter(
     city => city.city !== route.params.city && city.state !== route.params.state
   );
-  localStorage.setItem('savedCities', JSON.stringify(updatedCities));
+  setCities(updatedCities);
   router.push({
     name: 'home',
   });
@@ -59,7 +60,7 @@ const addCity = () => {
   };
 
   savedCities.value.push(locationObj);
-  localStorage.setItem('savedCities', JSON.stringify(savedCities.value));
+  setCities(savedCities.value);
 
   const query = structuredClone(route.query);
   delete query.preview;
@@ -68,10 +69,6 @@ const addCity = () => {
 };
 
 const roundTemp = temp => Math.round(temp);
-
-onMounted(
-  () => (savedCities.value = JSON.parse(localStorage.getItem('savedCities')))
-);
 
 const isSavedCity = () => {
   return savedCities.value.find(
