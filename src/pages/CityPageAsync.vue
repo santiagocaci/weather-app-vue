@@ -39,7 +39,9 @@ const getWeatherData = async () => {
 
 const removeCity = () => {
   const cities = JSON.parse(localStorage.getItem('savedCities'));
-  const updatedCities = cities.filter(city => city.id !== route.query.id);
+  const updatedCities = cities.filter(
+    city => city.city !== route.params.city && city.state !== route.params.state
+  );
   localStorage.setItem('savedCities', JSON.stringify(updatedCities));
   router.push({
     name: 'home',
@@ -79,8 +81,6 @@ const isSavedCity = () => {
   );
 };
 
-console.log(isSavedCity());
-
 const weatherData = await getWeatherData();
 </script>
 
@@ -98,7 +98,7 @@ const weatherData = await getWeatherData();
 
     <div class="relative flex flex-col items-center text-white py-12">
       <div
-        class="text-2xl absolute block -right-3 rounded-full px-2 py-1 cursor-pointer"
+        class="text-2xl absolute block -right-8 top-6 rounded-full px-2 py-1 cursor-pointer animate-pulse"
       >
         <i
           v-if="isSavedCity()"
@@ -193,3 +193,10 @@ const weatherData = await getWeatherData();
     </div>
   </div>
 </template>
+
+<style scoped>
+.icons-enter-from,
+.icons-leave-to {
+  opacity: 0;
+}
+</style>
