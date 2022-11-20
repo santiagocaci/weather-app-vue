@@ -10,6 +10,12 @@ const routes = [
     component: CityPage,
     meta: { title: 'Weather' },
   },
+  {
+    path: '/linkedin',
+    beforeEnter() {
+      window.location.href = 'https://linkedin/in/santiagocaci';
+    },
+  },
   { path: '/:pathMatch(.*)*', component: HomePage },
 ];
 

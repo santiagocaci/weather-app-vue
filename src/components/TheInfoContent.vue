@@ -32,5 +32,25 @@
         the city.
       </p>
     </div>
+
+    <div>
+      <div class="flex items-center space-x-4">
+        <h2 class="text-xl">Contact me!</h2>
+        <a
+          class="text-3xl"
+          href="https://github.com/santiagocaci"
+          target="_blank"
+        >
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a
+          class="text-3xl"
+          href="https://linkedin.com/in/santiagocaci"
+          target="_blank"
+        >
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+      </div>
+    </div>
   </div>
 </template>

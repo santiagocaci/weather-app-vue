@@ -8,7 +8,10 @@ import TheHeader from '@/components/TheHeader.vue';
     class="flex flex-col min-h-screen bg-gradient-to-b from-base-100 via-base-200 to-base-300"
   >
     <TheHeader />
-    <router-view v-slot="{ Component }">
+    <router-view
+      class="flex-1"
+      v-slot="{ Component }"
+    >
       <transition
         name="page"
         mode="out-in"

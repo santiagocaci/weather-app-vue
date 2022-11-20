@@ -11,11 +11,11 @@ defineEmits(['closeModal']);
     <Transition name="modal-box">
       <div
         v-show="isModalOpen"
-        class="absolute w-full bg-black/30 h-screen top-0 left-0 flex justify-center px-8"
+        class="absolute z-20 w-full bg-black/30 h-screen top-0 left-0 flex justify-center px-8"
       >
         <Transition name="modal-content">
           <div
-            class="p-6 bg-info rounded-xl self-start mt-32 max-w-screen-md"
+            class="p-6 bg-gradient-to-r from-base-100 via-base-200 to-base-300 rounded-xl self-start mt-32 max-w-screen-md"
             v-if="isModalOpen"
           >
             <slot />
