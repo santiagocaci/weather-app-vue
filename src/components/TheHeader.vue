@@ -18,7 +18,7 @@ const toggleModal = () => (isModalActive.value = !isModalActive.value);
       <router-link to="/">
         <div class="flex items-center gap-3 text-2xl">
           <i class="fa-sharp fa-solid fa-sun"></i>
-          <p>Weather App</p>
+          <p>The Weather App</p>
         </div>
       </router-link>
 
