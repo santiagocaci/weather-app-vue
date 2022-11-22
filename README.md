@@ -1,6 +1,8 @@
 # Weather App
 
-Aplicación del clima hecha en Vue que muestra la temperatura actual y de los próximos 7 días. Utiliza el localStorage del navegador para poder guardar las ciudades y/o provincias que el usuario desee seguir
+Aplicación del clima hecha en Vue que muestra la temperatura actual y de los próximos 7 días. Utiliza el localStorage del navegador para poder guardar las ciudades y/o provincias que el usuario desee seguir.
+
+Link de la aplicacion en produccion https://weatherappvuesc.netlify.app/
 
 ## Instalación
 
