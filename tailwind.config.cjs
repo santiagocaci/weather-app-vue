@@ -15,7 +15,7 @@ module.exports = {
       md: '768px',
     },
   },
-  daysiui: {
+  daisyui: {
     themes: ['aqua'],
   },
   plugins: [require('daisyui')],
